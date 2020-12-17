@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>For gym</title>
+	
+	<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="To train for agility or HIIT">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script>
+
+function AddD(){
+	document.getElementById('Dwn').value = 1-document.getElementById('Dwn').value;
+}
+
+function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+function StopCon(){
+	if (document.getElementById("stop").innerHTML == "Pause"){
+		document.getElementById("stop").innerHTML = "Cont";
+	}
+	else{
+		document.getElementById("stop").innerHTML = "Pause";
+	}
+}
+
+function StopCon2(){
+	var onPause = 1;
+	if (document.getElementById("stop").innerHTML == "Pause"){
+		onPause = 0;
+	}
+	return onPause;
+}
+ 
+async function Animal(x){
+	document.getElementById('animal').disabled = true;
+	document.getElementById('agility').disabled = true;
+	document.getElementById('train').disabled = true;
+	document.getElementById('Dwn').disabled = true;
+	document.getElementById('stop').disabled = false;
+	var Step = document.getElementById('Step').value;
+	var Pause = document.getElementById('Pause').value;
+	var Reps = document.getElementById('Reps').value;
+
+	var Letters = ["Duck","Lizard","Bear","Monk R","Monk S", "Tiger", "Scorpion", "Horse", "Crab", "Lat C", "Worm"];
+	
+	TotLetter = Math.floor(Reps/Letters.length); // How many times Letters is repeated
+	Rest = Reps-(Letters.length*TotLetter);  // reminder of number of letters
+
+	var LettersAll = [];
+	for (j=0; j<TotLetter; j++){
+			tmp1 = LettersAll.concat(Letters);
+			LettersAll = tmp1;
+	}
+	if (Rest>0){
+		var tmpLetters = Letters;
+		for (j=0; j<Rest; j++){
+			tmp = Math.floor(Math.random()*tmpLetters.length);
+			LettersAll.push(tmpLetters[tmp]);
+			tmpLetters.splice(tmp,1);
+		}
+	}
+
+	for (k=5; k>0; k--){
+		while (StopCon2() == 1){
+			await sleep(500);
+		}
+		document.getElementById("Val").innerHTML = k;
+		await sleep(1000);
+	}
+
+	document.getElementById("Repn").innerHTML = "1/"+Reps;
+	for (i=0; i<Reps; i++){
+		placeCol = i-6*Math.floor(i/6);
+		document.getElementById("Val").style.color = "blue";
+		for(j=Step; j>0; j--){
+			document.getElementById("Val").style.fontSize = "100px";
+			document.getElementById("Val").innerHTML = j+" "+LettersAll[i];
+			await sleep(1000);
+		}
+		while (StopCon2() == 1){
+			await sleep(500);
+		}
+		while (StopCon2() == 1){
+			await sleep(500);
+		}
+	document.getElementById("Val").style.fontSize = "200px";
+	document.getElementById("Val").style.color = "black";
+	if (i<(Reps-1)){
+		for (k=Pause; k>0; k--){
+		document.getElementById("Val").style.fontSize = "100px";
+		document.getElementById("Val").innerHTML = k+" "+LettersAll[i+1];
+		await sleep(1000);
+		while (StopCon2() == 1){
+			await sleep(500);
+		}
+		}
+		document.getElementById("Repn").innerHTML = (i+2)+"/"+Reps;
+	}
+	else{
+		document.getElementById("Val").innerHTML = "OK";
+		document.getElementById("Repn").innerHTML = " ";
+		document.getElementById('animal').disabled = false;
+		document.getElementById('agility').disabled = false;
+		document.getElementById('train').disabled = false;
+		document.getElementById('Dwn').disabled = false;
+		document.getElementById('stop').disabled = false;
+	}
+	}
+}
+
+async function Agility(x){
+	document.getElementById('animal').disabled = true;
+	document.getElementById('agility').disabled = true;
+	document.getElementById('train').disabled = true;
+	document.getElementById('Dwn').disabled = true;
+	document.getElementById('stop').disabled = false;
+	var Step = document.getElementById('Step').value;
+	var Pause = document.getElementById('Pause').value;
+	var Reps = document.getElementById('Reps').value;
+	var Speed = document.getElementById('Speed').value;
+
+	var Letters = ["L","R","F","B","U"];
+	var Colors = ["orange","blue","red","purple","green","cyan"];
+	if (document.getElementById('Dwn').value==1){Letters.push("D");};
+	
+	Steprep = Math.floor(Step/Speed); // number of letters per rep
+	AllLetter = Steprep*Reps; // total numner of letters
+	TotLetter = Math.floor(AllLetter/Letters.length); // How many times Letters is repeated
+	Rest = AllLetter-(Letters.length*TotLetter);  // reminder of number of letters
+
+	var LettersAll = [];
+	if (TotLetter>0){
+		for (j=0; j<TotLetter; j++){
+			tmp1 = LettersAll.concat(Letters);
+			LettersAll = tmp1;
+		}
+	}
+	if (Rest>0){
+		var tmpLetters = Letters;
+		for (j=0; j<Rest; j++){
+			tmp = Math.floor(Math.random()*tmpLetters.length);
+			LettersAll.push(tmpLetters[tmp]);
+			tmpLetters.splice(tmp,1);
+		}
+	}
+
+	for (k=5; k>0; k--){
+		while (StopCon2() == 1){
+			await sleep(500);
+		}
+		document.getElementById("Val").innerHTML = k;
+		await sleep(1000);
+	}
+
+	document.getElementById("Repn").innerHTML = "1/"+Reps;
+	for (i=0; i<Reps; i++){
+		for (h = 0; h<Steprep; h++){
+			place = Math.floor(Math.random()*LettersAll.length);
+			placeCol = h-6*Math.floor(h/6);
+			document.getElementById("Val").style.color = Colors[placeCol];
+			document.getElementById("Val").innerHTML = LettersAll[place];
+			LettersAll.splice(place,1);
+			await sleep(Speed*1000);
+			while (StopCon2() == 1){
+				await sleep(500);
+			}
+		}
+	while (StopCon2() == 1){
+			await sleep(500);
+		}
+	document.getElementById("Val").style.color = "black";
+	if (i<(Reps-1)){
+		for (k=Pause; k>0; k--){
+		document.getElementById("Val").innerHTML = k;
+		await sleep(1000);
+		while (StopCon2() == 1){
+			await sleep(500);
+		}
+		}
+		document.getElementById("Repn").innerHTML = (i+2)+"/"+Reps;
+	}
+	else{
+		document.getElementById("Val").innerHTML = "OK";
+		document.getElementById("Repn").innerHTML = " ";
+		document.getElementById('animal').disabled = false;
+		document.getElementById('agility').disabled = false;
+		document.getElementById('train').disabled = false;
+		document.getElementById('Dwn').disabled = false;
+		document.getElementById('stop').disabled = false;
+	}
+	}
+}
+
+async function Train(x){
+	document.getElementById('animal').disabled = true;
+	document.getElementById('agility').disabled = true;
+	document.getElementById('train').disabled = true;
+	document.getElementById('stop').disabled = false;
+	var Step = document.getElementById('Step').value;
+	var Pause = document.getElementById('Pause').value;
+	var Reps = document.getElementById('Reps').value;
+
+	document.getElementById("Repn").innerHTML = "1/"+Reps;	
+		for (k=5; k>0; k--){
+				document.getElementById("Val").innerHTML = k;
+				await sleep(1000);
+			while (StopCon2() == 1){
+				await sleep(500);
+			}
+  		}
+
+  		for (i=0; i<Reps; i++){
+  			document.getElementById("Val").style.color = "blue"
+  			for (h = Step; h>0; h--){
+  				document.getElementById("Val").innerHTML = h;
+  				await sleep(1000);
+				while (StopCon2() == 1){
+					await sleep(500);
+				}
+	  		}
+	  		document.getElementById("Val").style.color = "black";
+			document.getElementById("Repn").innerHTML = (i+2)+"/"+Reps;
+		  	if (i<(Reps-1)){
+		  		for (k=Pause; k>0; k--){
+	  				document.getElementById("Val").innerHTML = k;
+	  				await sleep(1000);
+					while (StopCon2() == 1){
+						await sleep(500);
+					}
+	  			}
+	  		}
+	  		else{
+	  			document.getElementById("Val").innerHTML = "OK";
+	  			document.getElementById("Repn").innerHTML = " ";
+				document.getElementById('animal').disabled = false;
+				document.getElementById('agility').disabled = false;
+	  			document.getElementById('train').disabled = false;
+				document.getElementById('stop').disabled = true;
+	  		}
+		}
+	}
+
+</script>
+
+	<style>
+		* {
+			font-family: Verdana, Geneva, sans-serif;
+			font-size: 16px;
+		}
+		body{
+			display: block;
+			margin: 0;
+			width: 100%;
+			padding-top: 0px;
+			text-align: center;
+		}
+		p{
+			display: inline-block;
+			margin: 0;
+			text-align: right;
+		}
+		label{
+			display: inline-block;
+			margin: 0px;
+			margin-bottom: 10px;
+			margin-left: 5px;
+			margin-right: 20px;
+			width: 50px;
+		}
+		input{
+			height: 19px;
+			width: 40px;
+			text-align: center;
+		}
+		p.train{	
+			display: block;
+			font-size: 200px;
+			font-weight: bold;
+			margin: 0;
+			padding: 0;
+			margin-top: 5px;
+			test-align: center;
+			width: 100%;
+		}
+	p.Repn{
+		width: 40px;
+		font-size: 50px;
+		display: block;
+		margin: auto;
+	}
+	</style>
+
+</head>
+
+<body>
+	<form name="form">
+
+		<br>
+
+		<p>Interval (sec)</p><label for="Step"><input type="text" id="Step" value="45"></label>
+		<p>Rest (sec)</p><label for="Pause"><input type="text" id="Pause" value="15"></label>
+<br>
+		<p>Reps</p><label for="Reps"><input type="text" id="Reps" value="6"></label>
+<p>Speed (sec)</p><label for="Speed"><input type="text" id="Speed" value="3"></label>
+		
+		<br>
+
+		<button id="animal" type="button" onclick="Animal()">Animals</button>
+		<button id="agility" type="button" onclick="Agility()">Agility</button>
+		<button id="train" type="button" onclick="Train()">Train</button>
+		<button id="stop" type="button" onclick="StopCon()" disabled>Pause</button>
+		<input type="checkbox" name="Dwn" id="Dwn" value="0" unchecked onclick="AddD()"> Down
+
+		<br>
+
+		<p class="Repn" id="Repn"> </p>
+		<p class="train" id="Val"> </p>
+
+	</form>
+
+</body>
+</html>
